@@ -5,7 +5,7 @@ class Perceptron(object):
     """
     Implements a Perceptron
     """
-    def __init__(self, learning_rate, max_iters):
+    def __init__(self, learning_rate = 0.0001, max_iters = 100):
         """
 
         :param learning_rate: float  The learning rate for the perceptron algorithm.

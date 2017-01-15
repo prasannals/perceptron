@@ -28,14 +28,21 @@ class Perceptron(object):
         self.errors_ = []
 
         for _ in range(self.max_iters):
-            errors = 0
-            for xi, target in zip(data_frame, y):
-                update = self.learning_rate * (target - self.predict(xi))
-                self.weights[1:] += update * xi
-                self.weights[0] += update
-                errors += int(update != 0.0)
+            preds = self.predict(data_frame)
+            indicator = (y - preds)
+            row_update = indicator * self.learning_rate
 
-            self.errors_.append(errors)
+            self.weights[0] = self.weights[0] + np.sum(row_update)
+            self.weights[1:] = self.weights[1:] + np.sum( ((data_frame[:,1:].transpose() * row_update).transpose()), axis=0 )
+
+            self.errors_.append((preds != y).sum())
+
+            if((preds != y).sum() == 0):
+                print("Predictions: " ,preds)
+                print("Weights: ", self.weights)
+                print("Indicator: ", indicator)
+                print("Row update: ", row_update)
+
         return self
 
     def score(self, sample, weights):
@@ -53,7 +60,12 @@ class Perceptron(object):
         :param sample: A data frame with m data points and n features
         :return: The predicted class of the data point
         """
-        if self.score(sample, self.weights) >= 0:
-            return 1
-        else:
-            return -1
+        pred = []
+
+        for row in sample:
+            if self.score(row, self.weights) >= 0:
+                pred.append(1)
+            else:
+                pred.append(-1)
+
+        return np.array(pred)

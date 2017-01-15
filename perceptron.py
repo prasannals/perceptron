@@ -13,6 +13,7 @@ class Perceptron(object):
         """
         self.learning_rate = learning_rate
         self.max_iters = max_iters
+        self.weights = []
 
     def fit(self, data_frame, y):
         """
@@ -21,7 +22,9 @@ class Perceptron(object):
         :param y: An array like object with the true labels for the m samples
         :return: self
         """
-        pass
+        self.weights = np.zeros(len(y) + 1)   # initialize weights to 0
+
+
 
     def score(self, sample, weights):
         """
@@ -30,12 +33,18 @@ class Perceptron(object):
         :param weights: An array of weights of size n + 1
         :return: The "score" of the current data point for the provided weights
         """
-        pass
+        return np.dot(sample, weights[1:])
 
     def predict(self, sample):
         """
 
-        :param sample: A data point with n features
+        :param sample: A data frame with m data points and n features
         :return: The predicted class of the data point
         """
-        pass
+        pred = []
+        for entry in sample:
+            if self.score(entry, self.weights) >= 0:
+                pred.append(1)
+            else:
+                pred.append(-1)
+        return np.array(pred)

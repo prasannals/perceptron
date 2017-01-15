@@ -37,12 +37,6 @@ class Perceptron(object):
 
             self.errors_.append((preds != y).sum())
 
-            if((preds != y).sum() == 0):
-                print("Predictions: " ,preds)
-                print("Weights: ", self.weights)
-                print("Indicator: ", indicator)
-                print("Row update: ", row_update)
-
         return self
 
     def score(self, sample, weights):
